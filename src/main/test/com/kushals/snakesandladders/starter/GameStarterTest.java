@@ -33,7 +33,7 @@ public class GameStarterTest {
 		int numOfPlayer = 1;
 		List<Player> players = new ArrayList<>();
 		for(int i = 1; i <= numOfPlayer; i++) {
-			players.add(new Player("Test Player"));
+			players.add(new Player("Test Player" + i));
 		}
 		
 		int diceType = 1; // Normal dice

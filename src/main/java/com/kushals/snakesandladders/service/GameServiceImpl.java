@@ -25,7 +25,14 @@ public class GameServiceImpl implements GameService{
 		this.snakesPositions = new HashMap<>();
 		this.diceType = diceType;
 	}
-
+	
+	public GameServiceImpl(int boardSize) {
+		this.gameBoard = new GameBoard(boardSize);
+		this.players = new LinkedList<>();
+		this.snakesPositions = new HashMap<>();
+		this.diceType = -1;
+	}
+	
 	/**
 	 * Sets the initial board with players positions
 	 */
@@ -88,8 +95,9 @@ public class GameServiceImpl implements GameService{
 	 */
 	public void startGame() {
 		while(!this.isGameFinished && !players.isEmpty()) {
-			int rolledPosition = (diceType == 1) ? DiceUtil.throwDice() : DiceUtil.throwCrookedDice();
+			
 			Player currentPlayer = players.poll();
+			int rolledPosition = (currentPlayer.getDiceType() == 1) ? DiceUtil.throwDice() : DiceUtil.throwCrookedDice();
 			movePlayer(currentPlayer, rolledPosition);
 			if(hasPlayerWon(currentPlayer)) {
 				System.out.println("Player "+currentPlayer.getName()+ " has won the game");

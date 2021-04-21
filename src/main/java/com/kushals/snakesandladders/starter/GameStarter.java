@@ -1,11 +1,13 @@
 package com.kushals.snakesandladders.starter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
+import com.kushals.snakesandladders.enums.DiceTypes;
 import com.kushals.snakesandladders.model.Player;
 import com.kushals.snakesandladders.model.Snake;
 import com.kushals.snakesandladders.service.GameService;
@@ -41,10 +43,25 @@ public class GameStarter {
 			snakesPositions.put(start, snake);
 		}
 		
-		System.out.println("Which dice do you want to use? (Press 1 for Normal and 2 for Crooked [even numbers])");
-		int diceType = sc.nextInt();
+		System.out.println("Available Dice Types:");
+		System.out.println(Arrays.asList(DiceTypes.values()));
+		for(int i = 0; i < players.size(); i++) {
+			System.out.println("Which dice do you want to use?");
+			System.out.println("If you do not wish to have specific dice, you can skip");
+			String choice = sc.nextLine();
+			
+			switch(choice) {
+				case "1" : players.get(i).setDiceType(1);
+					break;
+				case "2" : players.get(i).setDiceType(2);
+					break;
+				default :
+					System.out.println("Default dice has been choosen which is normal dice");
+					players.get(i).setDiceType(1);
+			}
+		}
 		
-		GameService gameService = new GameServiceImpl(GAME_BOARD_SIZE, diceType);
+		GameService gameService = new GameServiceImpl(GAME_BOARD_SIZE);
 		gameService.setPlayerOnBoard(players);
 		gameService.setSnakesOnBoard(snakes, snakesPositions);
 		
