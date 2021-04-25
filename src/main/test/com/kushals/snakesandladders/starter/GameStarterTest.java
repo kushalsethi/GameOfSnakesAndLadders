@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.kushals.snakesandladders.enums.DiceTypes;
 import com.kushals.snakesandladders.model.Player;
 import com.kushals.snakesandladders.model.Snake;
 import com.kushals.snakesandladders.service.GameService;
@@ -36,8 +37,7 @@ public class GameStarterTest {
 			players.add(new Player("Test Player" + i));
 		}
 		
-		int diceType = 1; // Normal dice
-		GameService gameService = new GameServiceImpl(GAME_BOARD_SIZE, diceType);
+		GameService gameService = new GameServiceImpl(GAME_BOARD_SIZE);
 		gameService.setPlayerOnBoard(players);
 		gameService.setSnakesOnBoard(snakes, snakesPositions);
 		
@@ -61,11 +61,10 @@ public class GameStarterTest {
 		int numOfPlayer = 1;
 		List<Player> players = new ArrayList<>();
 		for(int i = 1; i <= numOfPlayer; i++) {
-			players.add(new Player("Test Player"));
+			players.add(new Player("Test Player", DiceTypes.CROOKED.getDiceType()));
 		}
 		
-		int diceType = 2; // Crooked dice
-		GameService gameService = new GameServiceImpl(GAME_BOARD_SIZE, diceType);
+		GameService gameService = new GameServiceImpl(GAME_BOARD_SIZE);
 		gameService.setPlayerOnBoard(players);
 		gameService.setSnakesOnBoard(snakes, snakesPositions);
 		

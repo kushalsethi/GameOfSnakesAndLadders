@@ -6,15 +6,24 @@ import com.kushals.snakesandladders.model.dice.Dice;
 import com.kushals.snakesandladders.model.dice.NormalDice;
 
 public enum DiceTypes {
-	NORMAL(new NormalDice()), CROOKED(new CrookedDice()), ADD_THREE(new AddThreeDice());
+	NORMAL("1. Normal ",new NormalDice()), CROOKED("2. Crooked ", new CrookedDice()), ADD_THREE("3. Add Three ", new AddThreeDice());
 	
 	private Dice dice;
-	
-	private DiceTypes(Dice dice) {
+	private String type;
+	private DiceTypes(String type, Dice dice) {
+		this.type = type;
 		this.dice = dice;
+	}
+	
+	public String getType() {
+		return type;
 	}
 	
 	public Dice getDiceType() {
 		return dice;
+	}
+	
+	public String toString() {
+		return type;
 	}
 }

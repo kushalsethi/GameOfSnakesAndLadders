@@ -2,21 +2,24 @@ package com.kushals.snakesandladders.model;
 
 import java.util.UUID;
 
+import com.kushals.snakesandladders.enums.DiceTypes;
+import com.kushals.snakesandladders.model.dice.Dice;
+
 public class Player {
 	String name;
 	String id;
-	int diceType;
+	Dice dice;
 	
 	public Player(String name) {
 		this.name = name;
 		this.id = UUID.randomUUID().toString();
-		this.diceType = 1; // normal dice
+		this.dice = DiceTypes.NORMAL.getDiceType(); // normal dice
 	}
 	
-	public Player(String name, int diceType) {
+	public Player(String name, Dice dice) {
 		this.name = name;
 		this.id = UUID.randomUUID().toString();
-		this.diceType = diceType;
+		this.dice = dice;
 	}
 
 	public String getName() {
@@ -27,12 +30,12 @@ public class Player {
 		return id;
 	}
 
-	public int getDiceType() {
-		return diceType;
+	public Dice getDice() {
+		return dice;
 	}
 
-	public void setDiceType(int diceType) {
-		this.diceType = diceType;
+	public void setDice(Dice dice) {
+		this.dice = dice;
 	}
 
 	@Override

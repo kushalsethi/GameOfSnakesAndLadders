@@ -6,31 +6,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import com.kushals.snakesandladders.enums.DiceTypes;
 import com.kushals.snakesandladders.model.GameBoard;
 import com.kushals.snakesandladders.model.Player;
 import com.kushals.snakesandladders.model.Snake;
-import com.kushals.snakesandladders.util.DiceUtil;
 
 public class GameServiceImpl implements GameService{
 	private GameBoard gameBoard;
 	private Queue<Player> players;
 	private boolean isGameFinished;
 	private Map<Integer, Snake> snakesPositions;
-	private int diceType;
-	
-
-	public GameServiceImpl(int boardSize, int diceType) {
-		this.gameBoard = new GameBoard(boardSize);
-		this.players = new LinkedList<>();
-		this.snakesPositions = new HashMap<>();
-		this.diceType = diceType;
-	}
 	
 	public GameServiceImpl(int boardSize) {
 		this.gameBoard = new GameBoard(boardSize);
 		this.players = new LinkedList<>();
 		this.snakesPositions = new HashMap<>();
-		this.diceType = -1;
 	}
 	
 	/**
@@ -66,6 +56,7 @@ public class GameServiceImpl implements GameService{
 
 		if (this.snakesPositions.containsKey(newPosition)) {
 			newPosition = this.snakesPositions.get(newPosition).getEnd();
+			System.out.println("Snake is present at this position, moving player to new position: "+newPosition);
 		}
 		return newPosition;
 	}
@@ -78,16 +69,17 @@ public class GameServiceImpl implements GameService{
 	 */
 	private void movePlayer(Player player, int number) {
 		int oldPosition = this.gameBoard.getPlayersPosition().get(player.getId());
+		
 		int newPosition = oldPosition + number;
 
 		if (newPosition > this.gameBoard.getSize()) {
-			System.out.println("New position goes out of board, no change in position for current player");
+			System.out.println("New position goes out of board, no change in position for current player "+player.getName());
 			return;
 		} else {
 			newPosition = this.getNewPositionForPlayer(newPosition);
 		}
 		this.gameBoard.getPlayersPosition().put(player.getId(), newPosition);
-		System.out.println("Player " + player.getName() + " got number " + number + ", has moved to " + newPosition);
+		System.out.println("Player " + player.getName() + " has rolled dice with number " + number + ", has moved to " + newPosition);
 	}
 	
 	/**
@@ -97,7 +89,7 @@ public class GameServiceImpl implements GameService{
 		while(!this.isGameFinished && !players.isEmpty()) {
 			
 			Player currentPlayer = players.poll();
-			int rolledPosition = (currentPlayer.getDiceType() == 1) ? DiceUtil.throwDice() : DiceUtil.throwCrookedDice();
+			int rolledPosition = currentPlayer.getDice().roll();
 			movePlayer(currentPlayer, rolledPosition);
 			if(hasPlayerWon(currentPlayer)) {
 				System.out.println("Player "+currentPlayer.getName()+ " has won the game");
@@ -118,7 +110,7 @@ public class GameServiceImpl implements GameService{
 	 * @return
 	 */
 	private boolean canPlayerEverWin(Player player) {
-		return diceType == 2 ? this.gameBoard.getPlayersPosition().get(player.getId()) % 2 == 0 : true;
+		return DiceTypes.CROOKED.getDiceType() == player.getDice() ? this.gameBoard.getPlayersPosition().get(player.getId()) % 2 == 0 : true;
 	}
 	
 	/**
